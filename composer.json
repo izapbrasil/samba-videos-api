@@ -1,0 +1,32 @@
+{
+    "name": "izapbrasil/samba-videos-api",
+    "description": "PHP library for Samba Videos API.",
+    "type": "library",
+    "homepage": "https://github.com/izapbrasil/samba-videos-api",
+    "keywords": ["sambatech", "sambavideos", "samba-videos"],
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "iZap",
+            "homepage": "https://izap.com.br"
+        },
+        {
+            "name": "Valdeci Jr",
+            "email": "valdeci.junior@izap.com.br"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=5.6.0",
+        "ext-curl": "*",
+        "ext-json": "*",
+
+        "mashape/unirest-php": "^3.0",
+        "monolog/monolog": "^1.23"
+    },
+    "autoload": {
+        "psr-4": {
+            "SambaVideos\\": "src/SambaVideos"
+        }
+    }
+}

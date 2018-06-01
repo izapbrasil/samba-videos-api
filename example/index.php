@@ -16,24 +16,42 @@
  */
 require_once '../vendor/autoload.php';
 
-$access_token = 'ACCESS-TOKEN';
+$access_token = 'ACCESS_TOKEN';
+$media_id = 'MEDIA_ID';
 
 try {
     // Projects
     $project = \SambaVideos\Resource\Project::instance($access_token);
     $projects = $project->search();
     $project_id = $projects[0]['id'];
-    var_dump($projects);
+    print_r($projects);
 
     // Categories
     $category = \SambaVideos\Resource\Category::instance($access_token);
     $categories = $category->search(['pid' => $project_id]);
-    var_dump($categories);
+    print_r($categories);
 
     // Medias
     $media = \SambaVideos\Resource\Media::instance($access_token);
     $medias = $media->search(['pid' => $project_id]);
-    var_dump($medias);
+    print_r($medias);
+
+    // Upload Media
+    $media = \SambaVideos\Resource\Media::instance($access_token);
+    $response = $media->create(['qualifier' => 'VIDEO'], ['pid' => $project_id]);
+    print_r($response);
+
+    $response = $media->upload($response['uploadUrl'], 'video.mp4');
+    print_r($response);
+
+
+    // Upload Thumbnail
+    $media = \SambaVideos\Resource\Media::instance($access_token);
+    $response = $media->createThumbnail($media_id, ['pid' => $project_id]);
+    print_r($response);
+
+    $response = $media->upload($response['uploadUrl'], 'thumb.png');
+    print_r($response);
 } catch (Exception $e) {
     var_dump($e);
 }

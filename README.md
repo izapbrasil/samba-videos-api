@@ -1,6 +1,6 @@
 # Samba Videos API
 
-PHP library for Samba Videos API. http://dev.sambatech.com/documentation/sambavideos/index.html
+PHP library for Samba Videos API. http://dev.sambatech.com/
 
 
 ## Requirements

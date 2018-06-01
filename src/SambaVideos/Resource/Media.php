@@ -18,6 +18,9 @@
 namespace SambaVideos\Resource;
 
 use SambaVideos\AbstractResource;
+use SambaVideos\Exception\RequestException;
+use Unirest\Exception;
+use Unirest\Request;
 
 /**
  * Media
@@ -27,6 +30,92 @@ use SambaVideos\AbstractResource;
  */
 class Media extends AbstractResource
 {
-    /** @var string  */
+    /** @var string */
     protected $uri = '/medias';
+
+
+    /**
+     * @param int   $identifier
+     * @param array $params
+     *
+     * @return array
+     * @throws RequestException
+     */
+    public function createThumbnail($identifier, array $params = [])
+    {
+        try {
+            $body = ['qualifier' => 'THUMBNAIL'];
+
+            $body = Request\Body::Json($body);
+            $headers = ['Content-Type' => 'application/json'];
+
+            $this->response = Request::post($this->buildUrl($params, $identifier), $headers, $body);
+
+            if (!in_array($this->response->code, [200, 201, 204])) {
+                throw $this->createRequestException('Fail to create thumbnail');
+            }
+
+            return $this->response->body;
+        } catch (Exception $e) {
+            throw $this->createRequestException($e->getMessage(), Request::getInfo(CURLINFO_HTTP_CODE), $e);
+        }
+    }
+
+    /**
+     * @param int   $identifier
+     * @param array $body
+     * @param array $params
+     *
+     * @return array
+     * @throws RequestException
+     */
+    public function createCaption($identifier, array $body, array $params = [])
+    {
+        try {
+            $body = ['qualifier' => 'CAPTION'] + $body;
+
+            $body = Request\Body::Json($body);
+            $headers = ['Content-Type' => 'application/json'];
+
+            $this->response = Request::post($this->buildUrl($params, $identifier), $headers, $body);
+
+            if (!in_array($this->response->code, [200, 201, 204])) {
+                throw $this->createRequestException('Fail to create caption');
+            }
+
+            return $this->response->body;
+        } catch (Exception $e) {
+            throw $this->createRequestException($e->getMessage(), Request::getInfo(CURLINFO_HTTP_CODE), $e);
+        }
+    }
+
+    /**
+     * @param string $uploadUrl
+     * @param string $filename
+     * @param string $mimetype
+     * @param string $postName
+     *
+     * @return mixed
+     * @throws RequestException
+     */
+    public function upload($uploadUrl, $filename, $mimetype = '', $postName = '')
+    {
+        try {
+            $headers = ['Accept' => 'application/json'];
+
+            $body = [
+                'file' => Request\Body::File($filename, $mimetype, $postName),
+            ];
+
+            $this->response = Request::post($uploadUrl, $headers, $body);
+
+            if (!in_array($this->response->code, [200, 201, 204])) {
+                throw $this->createRequestException('Fail to upload file');
+            }
+
+            return $this->response->body;
+        } catch (Exception $e) {
+            throw $this->createRequestException($e->getMessage(), Request::getInfo(CURLINFO_HTTP_CODE), $e);
+        }
+    }
 }

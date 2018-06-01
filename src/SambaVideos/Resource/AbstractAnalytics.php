@@ -30,6 +30,7 @@ abstract class AbstractAnalytics extends AbstractResource
 {
     /**
      * @inheritDoc
+     * @throws InvalidOperationException
      */
     public function create(array $params, array $body = [])
     {
@@ -38,6 +39,7 @@ abstract class AbstractAnalytics extends AbstractResource
 
     /**
      * @inheritDoc
+     * @throws InvalidOperationException
      */
     public function update($identifier, array $params, array $body = [])
     {
@@ -46,6 +48,7 @@ abstract class AbstractAnalytics extends AbstractResource
 
     /**
      * @inheritDoc
+     * @throws InvalidOperationException
      */
     public function delete($identifier, array $params = [])
     {

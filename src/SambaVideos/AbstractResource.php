@@ -17,7 +17,7 @@
 
 namespace SambaVideos;
 
-use Monolog\Logger;
+use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use SambaVideos\Exception\RequestException;
 use Unirest\Exception;
@@ -40,7 +40,7 @@ abstract class AbstractResource
     /** @var Response */
     protected $response;
 
-    /** @var Logger */
+    /** @var LoggerInterface */
     protected $logger;
 
     /** @var int */
@@ -251,7 +251,7 @@ abstract class AbstractResource
     }
 
     /**
-     * @return Logger
+     * @return LoggerInterface
      */
     public function getLogger()
     {
@@ -263,11 +263,11 @@ abstract class AbstractResource
     }
 
     /**
-     * @param Logger $logger
+     * @param LoggerInterface $logger
      *
      * @return AbstractResource
      */
-    public function setLogger($logger)
+    public function setLogger(LoggerInterface $logger)
     {
         $this->logger = $logger;
 
@@ -275,19 +275,19 @@ abstract class AbstractResource
     }
 
     /**
-     * @return int
+     * @return mixed
      */
     public function getLoggerLevel()
     {
         if (empty($this->logger_level)) {
-            $this->logger_level = Logger::ERROR;
+            $this->logger_level = 'error';
         }
 
         return $this->logger_level;
     }
 
     /**
-     * @param int $logger_level
+     * @param mixed $logger_level
      *
      * @return AbstractResource
      */

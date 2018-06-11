@@ -50,7 +50,7 @@ try {
     $response = $media->createThumbnail($media_id, ['pid' => $project_id]);
     print_r($response);
 
-    $response = $media->upload($response['uploadUrl'], 'thumb.png');
+    $response = $media->upload($response['uploadUrl'], 'thumb.png', 'image/png');
     print_r($response);
 } catch (Exception $e) {
     var_dump($e);

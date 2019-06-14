@@ -100,6 +100,32 @@ abstract class AbstractResource
     }
 
     /**
+     * @param array $params
+     *
+     * @return array
+     * @throws RequestException
+     */
+    public function searchHeaders(array $params = [])
+    {
+        try {
+            $params += [
+                'start' => 0,
+                'limit' => 1,
+            ];
+
+            $this->response = Request::get($this->buildUrl($params));
+
+            if ($this->response->code != 200) {
+                throw $this->createRequestException('Fail to get headers resource');
+            }
+
+            return $this->response->headers;
+        } catch (Exception $e) {
+            throw $this->createRequestException($e->getMessage(), Request::getInfo(CURLINFO_HTTP_CODE), $e);
+        }
+    }
+
+    /**
      * @param mixed $identifier
      * @param array $params
      *
